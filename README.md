@@ -2,7 +2,7 @@
 
 
 ## Installation on RedPitaya
-SSH into your favourite RP board and execute the following commands
+SSH into your favourite RP board and execute the following commands:
 ```shell
 ssh root@YOUR-RP-IP-ADDRESS
 apt-get install python3-setuptools python3-influxdb ntp parallel libfftw3-bin libconfig9 python-geohash
@@ -12,4 +12,4 @@ cd sdr_wspr
 make INSTALL_DIR=/opt/redpitaya
 reboot
 ```
-Afterwards you will find a new application call "SDR WSPR" in the browser under http://YOUR-RP-IP-ADDRESS/ .
+As a result you will find a new application call "SDR WSPR" in the browser under http://YOUR-RP-IP-ADDRESS/ .
