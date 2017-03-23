@@ -1,4 +1,5 @@
-# sdr-wspr
+![alt tag](https://raw.githubusercontent.com/PA7T/sdr_wspr/master/info/icon.png)
+
 
 ## Installation on RedPitaya
 SSH into your favourite RP board and execute the following commands
