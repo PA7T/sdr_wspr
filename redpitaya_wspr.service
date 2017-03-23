@@ -1,0 +1,23 @@
+[Unit]
+Description=8-channel wspr receiver for Red Pitaya
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+#PIDFile=/var/run/redpitaya_wspr.pid
+# TODO: it should be possible to use EnvironmentFile, but it is not working properly
+# complains about failing library path, or something else
+#EnvironmentFile=/etc/sysconfig/redpitaya
+Environment=PATH_REDPITAYA=/opt/redpitaya
+Environment=LD_LIBRARY_PATH=/opt/redpitaya/lib PATH=/sbin:/usr/sbin:/bin:/usr/bin:/opt/redpitaya/sbin:/opt/redpitaya/bin
+ExecStartPre=/bin/sh -c "cat /opt/redpitaya/www/apps/sdr_wspr/sdr_transceiver_wspr.bit > /dev/xdevcfg"
+ExecStart=/bin/bash -c "/opt/redpitaya/www/apps/sdr_wspr/wspr-server"
+#ExecStartPost=/bin/sh -c "/usr/bin/killall write-c2-files"
+#ExecReload=
+ExecStop=/bin/kill -15 $MAINPID
+ExecStop=/usr/bin/killall -q write-c2-files
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

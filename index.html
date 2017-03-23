@@ -1,0 +1,172 @@
+<!-- $Id$
+ *
+ * Red Pitaya SDR-WSPR service
+ *
+ * Author: Clemens Heese / PA7T / DL2ZZ <pa7t@wsprlive.net>
+ *
+ * GPLv3
+ *
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Red Pitaya</title>
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/popupstack.css" type="text/css" />
+    <link rel="stylesheet" href="css/style.css?2">
+    <script src="../assets/jquery/jquery-2.1.3.min.js"></script>
+    <script src="../assets/jquery/jquery-ui.min.js"></script>
+    <script src="../assets/jquery/jquery.ui.touch-punch.min.js"></script>
+    <script src="../assets/jquery/jquery.cookie.js?3"></script>
+    <script src="../assets/jquery/jquery.browser.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/popupstack.js?1"></script>
+    <script src="js/pako.js"></script>
+    <script src="js/wspr.js"></script>
+    <!--<script>
+      var app_id = 'sdr_wspr';
+      var root_url = '';
+      var start_app_url = root_url + '/bazaar?start=' + app_id;
+      var stop_app_url = root_url + '/bazaar?stop=' + app_id;
+      function start_app() {
+        $.ajax({
+          url: start_app_url,
+          async: true
+        });
+      }
+      function stop_app() {
+        $.ajax({
+          url: stop_app_url,
+          async: false
+        });
+      }
+    </script>-->    
+</head>
+
+<body>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+    <div id="header">
+        <div id="description">&nbsp;</div>
+    </div>
+    <div class="full-content">
+        <div class="container-fluid">
+            <div class="navbar navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">T</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">
+                            <img class="back-btn" src="../assets/images/navigation_arrow_left.png">
+                        </a>
+                        <img class="logo" width=110 src="../assets/images/navigation_logo.png">
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="global_container" style="position: relative;">
+                <div id="main">
+                    <div class="left-wspr">
+                        <div class="left-content-wspr" style="font-size: 18pt; color: gray;">
+                            <p>WSPR receiver application (by Pavel Demin, DK5HH and PA7T)</p>
+                            <ul>
+                                <li>enables 8-channel WSPR receiver</li>
+                                <li>!!! Stop before loading other applications !!!</li>
+                            </ul>
+			    <textarea class="left-content-wspr" style="font-size: 10pt; color: gray;background-color: transparent;" align="left" id="wspr-decodes" cols="100%" rows="10" readonly></textarea>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="right-wspr">
+			<div class="wspr-config">
+				<span class="col-info">Callsign:</span>
+				<input class="is-info" name="call" id="call" type="text" value="YOURCALL">
+			</div>
+			<div class="wspr-config">
+				<span class="col-info">Locator:</span>
+				<input class="is-info" name="grid" id="grid" type="text" value="YOURGRID">
+			</div>
+			<div class="wspr-config">
+				<span class="col-info">Comment:</span>
+				<input class="is-info" name="comment" id="comment" type="text" value="YOURCOMMENT">
+			</div>
+			<div class="wspr-config">
+				<span class="col-info">PPM:</span>
+				<input class="is-info" name="ppm" id="ppm" type="text" value=0>
+			</div>
+			<div class="wspr-config-bands">
+				<span class="col-info">Bands (max 8!):</span>
+				<center><table text-align="left">
+				<tr>
+				<td><input type="checkbox" name="6m" value="50.294500" id="50294500"> 6m</td>
+				<td><input checked type="checkbox" name="10m" value="28.126100" id="28126100">10m</td>
+				<td><input type="checkbox" name="12m" value="24.926100" id="24926100">12m</td>
+				<td><input checked type="checkbox" name="15m" value="21.096100" id="21096100">15m</td>
+				</tr>
+				<tr>
+				<td><input type="checkbox" name="17m" value="18.106100" id="18106100">17m</td>
+				<td><input checked type="checkbox" name="20m" value="14.097100" id="14097100">20m</td>
+				<td><input checked type="checkbox" name="30m" value="10.140200" id="10140200">30m</td>
+				<td><input checked type="checkbox" name="40m" value="7.040100" id="7040100">40m</td>
+				</tr>
+				<tr>
+				<td><input checked type="checkbox" name="60m" value="5.288700" id="5288700">60m</td>
+				<td><input checked type="checkbox" name="80m" value="3.594100" id="3594100">80m</td>
+				<td><input checked type="checkbox" name="160m" value="1.838100" id="1838100">160m</td>
+				<td><input type="checkbox" name="2200m" value="0.475700" id="0475700">2200m</td>
+				</tr>
+				</table></center>
+			</div>
+			<div class="wspr-config">
+				<span class="col-info"><a href="https://wsprlive.net/">WSPRlive.net</a> Account:</span>
+				<input class="is-info" name="wsprlive-id" id="wsprlive-id" type="text" value="none">
+			</div>
+			<div class="wspr-config">
+				<span class="col-info"><a href="https://wsprlive.net/">WSPRlive.net</a> Password:</span>
+				<input class="is-info" name="wsprlive-pass" id="wsprlive-pass" type="password" value="none">
+			</div>
+			<div class="wspr-config">
+                                <div class="run-buttom" id="WSPR_STORE_CONFIG">
+                                    <a href="#" id="a_store" style="">STORE CONFIG</a>
+                                </div>
+			</div>
+			<div class="wspr-config">
+                                <div class="run_button" id="WSPR_RUN">
+                                    <a href="#" id="a_run" style="">RUN</a>
+                                </div>
+                                <div class="run_button" id="WSPR_STOP" style="display:none;">
+                                    <a href="#" id="a_stop">STOP</a>
+                                </div>
+			</div>
+                    </div>
+                    <div>
+                        <div class="lavel-is-running" id="label-is-runnung" align=left style="font-size: 16pt; color: red;">
+                            WSPR receiver is not running, press RUN button to start it
+                        </div>
+                        <div id="label-is-not-runnung" align=left style="font-size: 16pt; color: green; display: none;">
+                            WSPR receiver is running ... 
+                        </div>
+                        <div align="left">
+                            <ul class="">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

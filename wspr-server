@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Scheduling script, that times recording of wspr transmissions
+#
+# Author: Clemens Heese / PA7T <pa7t@wsprlive.net>
+#
+# GPLv3 
+# 
+
+while true
+	do sleep 1
+		#echo `date`" Sleeping ..."
+		SECONDS=`date +%S`
+		if [ $(( `date +%M | sed 's/^0//'` % 2)) -eq 0 ]
+		then
+			#echo 'Sleeping for '`expr 120 - $SECONDS`' s'
+			sleep `expr 120 - $SECONDS`
+		else
+			#echo 'Sleeping for '`expr 60 - $SECONDS`' s'
+			sleep `expr 60 - $SECONDS`	
+		fi
+		#echo "Starting recording with nohup in background"
+		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
+done
