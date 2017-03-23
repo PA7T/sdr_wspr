@@ -1,6 +1,6 @@
 # sdr-wspr
 
-## Install on RedPitaya
+## Installation on RedPitaya
 SSH into your favourite RP board and execute the following commands
 ```shell
 ssh root@YOUR-RP-IP-ADDRESS
