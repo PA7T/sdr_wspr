@@ -5,7 +5,8 @@
 SSH into your favourite RP board and execute the following commands:
 ```shell
 ssh root@YOUR-RP-IP-ADDRESS
-apt-get install python3-setuptools python3-influxdb ntp parallel libfftw3-bin libconfig9 python-geohash
+apt-get install python3-setuptools python3-influxdb ntp parallel libfftw3-bin libconfig9
+pip3 install python-geohash
 cd /opt/redpitaya/www/apps
 git clone https://github.com/PA7T/sdr_wspr.git
 cd sdr_wspr
