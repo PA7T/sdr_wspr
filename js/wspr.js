@@ -228,7 +228,23 @@
             })
             .fail(function(msg) {
 		var decodes = msg.responseText
-		$('#wspr-decodes').val(decodes)
+		dec_lines = decodes.split(/\n/)
+		var wsprinfo = "<caption>WSPR spots from last decode</caption>"
+		wsprinfo += "<tr><th>Time</th><th>Frequency</th><th>Callsign</th><th>Locator</th><th>Power</th></tr>";
+		for (var i in dec_lines) {
+ 			wspr_msg = dec_lines[i].split(/\s+/);
+			if (wspr_msg.length == 12){
+				wsprinfo += "<tr>";
+				wsprinfo += "<td>" + wspr_msg[0] + "</td>"	
+				wsprinfo += "<td>" + wspr_msg[5] + "</td>"	
+				wsprinfo += "<td>" + wspr_msg[6] + "</td>"	
+				wsprinfo += "<td>" + wspr_msg[7] + "</td>"	
+				wsprinfo += "<td>" + wspr_msg[8] + "</td>"	
+				wsprinfo += "</tr>";
+			}
+		}
+		$("#wspr-decodes-table").html(wsprinfo)	
+		//$('#wspr-decodes').val(decodes)
             })
     }
     
