@@ -14,3 +14,6 @@ make INSTALL_DIR=/opt/redpitaya
 reboot
 ```
 As a result you will find a new application call "SDR WSPR" in the browser under http://YOUR-RP-IP-ADDRESS/ .
+
+## Screenshot
+![alt tag](https://raw.githubusercontent.com/PA7T/sdr_wspr/master/info/screenshot.png)
