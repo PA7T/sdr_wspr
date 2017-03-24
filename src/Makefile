@@ -25,13 +25,16 @@ OBJECTS=$(CXXOBJECTS)
 OUT_DIR=../
 C_OUT_NAME=$(OUT_DIR)controllerhf.so
 
-all: make_c_app make_wsprd
+all: make_c_app make_wsprd make_write-c2-files
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 make_wsprd:
 	cd wsprd && make wsprd
+
+make_write-c2-files: $(OBJECTS)
+	cd write-c2-files && make
 
 make_c_app: $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(C_OUT_NAME) $(LDFLAGS)

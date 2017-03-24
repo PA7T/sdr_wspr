@@ -4,3 +4,7 @@ all: write-c2-files
 
 write-c2-files: write-c2-files.c
 	gcc $(CFLAGS) -o $@ $^ -lm -lconfig
+	cp write-c2-files ../../
+
+clean:
+	rm write-c2-files
