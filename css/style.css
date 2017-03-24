@@ -142,6 +142,7 @@ area:hover {
 .navbar-nav li {
   width: 131px;
   text-align: center;
+  margin-right: 15px;
 }
 
 .nav > li > a {
@@ -190,7 +191,7 @@ area:hover {
 }
 
 .logo {
-  margin: -10px 0px 0px 15px;
+  margin: -10px 15px 0px 15px;
   float: left;
 }
 
