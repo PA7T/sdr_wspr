@@ -217,7 +217,7 @@ area:hover {
 }
 
 #main {
-  margin-right: 188px;
+  margin-right: 82px;
 }
 
 #buffer {
@@ -865,6 +865,21 @@ area:hover {
   float: left;
   font-size: 12px;
   padding: 0px;
+}
+.left-content-wspr-spots{
+  border-bottom: 1px solid #999;
+  border-right: 1px solid #999;
+  border-top: 1px solid #999;
+  border-left: 1px solid #999;
+  margin: 1px 1px 1px 1px;
+  width=80%;
+  padding: 5px;
+  font-size: 60%;
+}
+table.left-content-wspr-spots th{
+  font-size: 100%;
+  background-color: green;
+  color: black;
 }
 .wspr-config {
   border-bottom: 1px solid #999;
