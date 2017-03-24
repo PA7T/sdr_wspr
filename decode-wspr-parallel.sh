@@ -16,7 +16,7 @@ NICE=10
 RECORDER=/opt/redpitaya/www/apps/sdr_wspr/write-c2-files
 CONFIG=/opt/redpitaya/www/apps/sdr_wspr/write-c2-files.cfg
 
-DECODER=/opt/redpitaya/www/apps/sdr_wspr/wsprd_exp
+DECODER=/opt/redpitaya/www/apps/sdr_wspr/wsprd
 ALLMEPT=ALL_WSPR.TXT
 
 WSPRLIVEPAYLOAD=/dev/shm/wsprlive_payload.txt
