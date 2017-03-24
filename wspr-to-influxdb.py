@@ -1,9 +1,21 @@
 #!/usr/bin/python
 '''
 This module does prepare and upload the ALL_WSPR.TXT-format to the influxdb-server
+Copyright (C) 2016-present	Clemens Heese / PA7T <pa7t@wsprlive.net>
+				Michael Hartje / DK5HH <DK5HH@darc.de>
 
-Author : PA7T Clemens Heese clemens at pa7t.nl
-         DK5HH Michael Hartje DK5HH at darc.de
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Parameters:
  -fi inputfile (ALL_WSPR.TXT-format)
