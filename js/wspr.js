@@ -247,7 +247,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			if (wspr_msg.length == 12){
 				console.log(wspr_msg)
 				wsprinfo += "<tr>";
-				wsprinfo += "<td>" + wspr_msg[0] + "</td>"	
+				wsprinfo += "<td>" + wspr_msg[1] + "</td>"	
 				wsprinfo += "<td>" + wspr_msg[5] + "</td>"	
 				wsprinfo += "<td>" + wspr_msg[6] + "</td>"	
 				wsprinfo += "<td>" + wspr_msg[7] + "</td>"	
