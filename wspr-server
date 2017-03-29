@@ -19,6 +19,9 @@
 while true
 	do sleep 1
 		#echo `date`" Sleeping ..."
+
+		. /opt/redpitaya/www/apps/sdr_wspr/wspr-vars.sh
+	
 		SECONDS=`date +%S`
 		if [ $(( `date +%M | sed 's/^0//'` % 2)) -eq 0 ]
 		then
@@ -30,4 +33,9 @@ while true
 		fi
 		#echo "Starting recording with nohup in background"
 		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
+		sleep 10 # wait till fpga is heating oscillator constantly
+		if [[ $ENABLE_PPM_CORR -eq "true" ]]
+		then
+			sh -c /opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh
+		fi
 done
