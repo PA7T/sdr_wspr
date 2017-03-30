@@ -156,6 +156,7 @@ def wspr_to_upload(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
 
     wspr_tuple_time = strptime(wspr_date + wspr_time, "%y%m%d%H%M")
     wspr_time = strftime("%Y-%m-%dT%H:%M:%SZ", wspr_tuple_time)
+    wspr_epoch = "%.0f" % (calendar.timegm(wspr_tuple_time))
 
     loclon_reporter = locator_to_latlong(wspr_loc_reporter)
     wspr_geohash_reporter = Geohash.encode(loclon_reporter[0], loclon_reporter[1], precision=7)
@@ -226,7 +227,7 @@ def wspr_to_upload(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
                     ',loc_reporter=' + wspr_loc_reporter + \
                     ',geohash=' + str(wspr_geohash) + \
                     ',geohash_reporter=' + str(wspr_geohash_reporter) + \
-                    ',comment=\"' + str(wspr_comment)+"\"" + \
+                    ',comment=' + str(wspr_comment) + \
                     ' snr=' + str(wspr_snr) + 'i' +\
                     ',freq=' + str("%.6f" % float(wspr_freq)) + \
                     ',drift=' + str(int(wspr_drift)) + 'i' + \
@@ -235,13 +236,14 @@ def wspr_to_upload(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
                     ',az=' + str(wspr_az) + 'i' + \
                     ',bandi=' + str(wspr_band) + 'i' + \
                     ',pwr=' + str(wspr_pwr) + 'i' + \
-                    ' ' + str(wspr_time)
+                    ' ' + str(wspr_epoch)
                     
     return json_body, dat_str_local
 
 if __name__ == '__main__':  # noqa
     import re
-    from time import strftime, strptime
+    import calendar
+    from time import strftime, strptime, mktime
     from math import radians, cos, sin, asin, sqrt, atan2, pi
     from influxdb import InfluxDBClient
     import argparse
