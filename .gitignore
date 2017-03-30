@@ -1,2 +1,4 @@
+*.o
+*.so
 wspr-vars.sh
 bazaar/
