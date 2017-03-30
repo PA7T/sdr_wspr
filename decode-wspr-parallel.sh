@@ -51,10 +51,10 @@ echo "Uploading ..."
 echo "to wsprlive.net"
 #cat $ALLMEPT >> /media/ramdisk/ALL_WSPR_TEST.TXT
 /usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -fo $WSPRLIVEPAYLOAD -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H data.wsprlive.net -p 8086 -fi $ALLMEPT
-#curl -u $WLID:$WLPW -i -XPOST 'http://wsprlive.net:8086/write?db=wspr' --data-binary @$WSPRLIVEPAYLOAD
-#test $? -ne 0 || rm -f $WSPRLIVEPAYLOAD
+curl -u $WLID:$WLPW -i -XPOST 'http://data.wsprlive.net:8086/write?db=wspr&precision=s' --data-binary @$WSPRLIVEPAYLOAD  > /dev/null
+test $? -ne 0 || rm -f $WSPRLIVEPAYLOAD
 
-/usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H wsprlive.net -p 8086 -fi $ALLMEPT
+#/usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H data.wsprlive.net -p 8086 -fi $ALLMEPT
 
 echo "to wsprnet"
 # sort by highest SNR, then print unique date/time/band/call combinations,
@@ -66,3 +66,4 @@ cp $ALLMEPT wspr_last.txt
 curl -sS -m 8 -F allmept=@$ALLMEPT -F call=$CALL -F grid=$GRID http://wsprnet.org/post > /dev/null
 
 test $? -ne 0 || rm -f $ALLMEPT
+echo "done"
