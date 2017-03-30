@@ -36,6 +36,6 @@ while true
 		sleep 10 # wait till fpga is heating oscillator constantly
 		if [[ $ENABLE_PPM_CORR -eq "true" ]]
 		then
-			sh -c /opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh
+			sh -c '/opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh 90' # record PPM during wspr receiption and correct ppm value
 		fi
 done
