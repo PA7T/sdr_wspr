@@ -50,7 +50,7 @@ echo "Uploading ..."
 
 echo "to wsprlive.net"
 #cat $ALLMEPT >> /media/ramdisk/ALL_WSPR_TEST.TXT
-/usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -fo $WSPRLIVEPAYLOAD -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H wsprlive.net -p 8086 -fi $ALLMEPT
+/usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -fo $WSPRLIVEPAYLOAD -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H data.wsprlive.net -p 8086 -fi $ALLMEPT
 #curl -u $WLID:$WLPW -i -XPOST 'http://wsprlive.net:8086/write?db=wspr' --data-binary @$WSPRLIVEPAYLOAD
 #test $? -ne 0 || rm -f $WSPRLIVEPAYLOAD
 
