@@ -1,6 +1,6 @@
 ![alt tag](https://raw.githubusercontent.com/PA7T/sdr_wspr/master/info/icon.png)
 
-SDR WSPR is transforms you RedPitaya board into an 8 channel sofware defined radio receiver for WSPR transmissions. THis means you can monitor wspr beacons on 8 channel simultaneously.
+SDR WSPR transforms your [RedPitaya](http://redpitaya.com/) board into an 8 channel sofware defined radio receiver for WSPR transmissions. THis means you can monitor wspr beacons on 8 channel simultaneously and report them to [wsprnet.org](http://wsprnet.org/) and [WSPRlive.net](https://wsprlive.net/).
 
 In case you have bug reports or feature requests, please report them as an issue with this GitHub repository. This allows efficient tracking and avoids duplication.
 
