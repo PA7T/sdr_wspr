@@ -33,6 +33,14 @@ while true
 		fi
 		#echo "Starting recording with nohup in background"
 		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
+		# measure PPM deviation to external reference
+		if [[ $ENABLE_PPM_CORR_GPS -eq "true" ]]
+		then
+			cat /opt/redpitaya/www/apps/sdr_wspr/rez_counter.bit > /dev/xdevcfg # load reziprocal counter bitstream
+			rw
+			/opt/redpitaya/www/apps/sdr_wspr/update_ppm_ext.sh >> /opt/redpitaya/www/apps/sdr_wspr/ppm_log.log
+			cat /opt/redpitaya/www/apps/sdr_wspr/sdr_transceiver_wspr.bit > /dev/xdevcfg # load sdr_wspr bitstream
+		fi
 		sleep 10 # wait till fpga is heating oscillator constantly
 		if [[ $ENABLE_PPM_CORR -eq "true" ]]
 		then
