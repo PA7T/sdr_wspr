@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+MAC_LAST=`ip addr show eth0 | sed -n "s/.*ether \([^ ]*\).*/\1/p"  | sed -n "s/://pg" | sed 's/.*\(.\{6\}\)/\1/'`
+
 while true
 	do sleep 1
 		#echo `date`" Sleeping ..."
@@ -26,21 +28,23 @@ while true
 		if [ $(( `date +%M | sed 's/^0//'` % 2)) -eq 0 ]
 		then
 			#echo 'Sleeping for '`expr 120 - $SECONDS`' s'
-			sleep `expr 120 - $SECONDS`
+			sleep `expr 120 -5 - $SECONDS`
 		else
 			#echo 'Sleeping for '`expr 60 - $SECONDS`' s'
-			sleep `expr 60 - $SECONDS`	
+			sleep `expr 60 - 5 - $SECONDS`	
 		fi
-		#echo "Starting recording with nohup in background"
-		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
 		# measure PPM deviation to external reference
 		if [[ $ENABLE_PPM_CORR_GPS -eq "true" ]]
 		then
 			cat /opt/redpitaya/www/apps/sdr_wspr/rez_counter.bit > /dev/xdevcfg # load reziprocal counter bitstream
 			rw
-			/opt/redpitaya/www/apps/sdr_wspr/update_ppm_ext.sh >> /opt/redpitaya/www/apps/sdr_wspr/ppm_log.log
+			/opt/redpitaya/www/apps/sdr_wspr/update_ppm_ext.sh >> /opt/redpitaya/www/apps/sdr_wspr/ppm_$MAC_LAST.log
 			cat /opt/redpitaya/www/apps/sdr_wspr/sdr_transceiver_wspr.bit > /dev/xdevcfg # load sdr_wspr bitstream
 		fi
+		
+		#echo "Starting recording with nohup in background"
+		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
+		
 		sleep 10 # wait till fpga is heating oscillator constantly
 		if [[ $ENABLE_PPM_CORR -eq "true" ]]
 		then
