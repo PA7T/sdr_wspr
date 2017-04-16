@@ -5,9 +5,9 @@ echo -en '\xB5\x62\x06\x31\x20\x00\x00\x01\x00\x00\x32\x00\x00\x00\x04\x00\x00\x
 
 # measure 10 MHz reference frequency
 f_REF="10000000.0"
-T1=`/root/read_FPGA_temp.sh 1`
+T1=`/opt/redpitaya/www/apps/sdr_wspr/tools/read_FPGA_temp.sh 1`
 f=`/root/my_counter 24 12e6`
-T2=`/root/read_FPGA_temp.sh 1`
+T2=`/opt/redpitaya/www/apps/sdr_wspr/tools/read_FPGA_temp.sh 1`
 DATE=`date +%Y-%m-%d:%H:%M:%S`
 
 # calculate ppm
