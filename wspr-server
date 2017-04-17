@@ -25,12 +25,35 @@ if [ -e /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT ]; then
 fi
 
 # start server operation
+MAC_LAST=`ip addr show eth0 | sed -n "s/.*ether \([^ ]*\).*/\1/p"  | sed -n "s/://pg" | sed 's/.*\(.\{6\}\)/\1/'`
+
 while true
 	do sleep 1
 		#echo `date`" Sleeping ..."
 
 		. /opt/redpitaya/www/apps/sdr_wspr/wspr-vars.sh
-	
+
+		# wait till next decode finishes: second 53	
+		SECONDS=`date +%S`
+		if [ $(( `date +%M | sed 's/^0//'` % 2)) -eq 0 ]
+		then
+			#echo 'Sleeping for '`expr 120 - $SECONDS`' s'
+			sleep `expr 120 - 7 - $SECONDS`
+		else
+			#echo 'Sleeping for '`expr 60 - $SECONDS`' s'
+			sleep `expr 60 - 7 - $SECONDS`	
+		fi
+
+		# OPTION: measure PPM deviation to external reference
+		if [[ $ENABLE_PPM_CORR_GPS -eq "true" ]]
+		then
+			cat /opt/redpitaya/www/apps/sdr_wspr/rez_counter.bit > /dev/xdevcfg # load reziprocal counter bitstream
+			rw
+			/opt/redpitaya/www/apps/sdr_wspr/update_ppm_ext.sh >> /opt/redpitaya/www/apps/sdr_wspr/ppm_$MAC_LAST.log
+			cat /opt/redpitaya/www/apps/sdr_wspr/sdr_transceiver_wspr.bit > /dev/xdevcfg # load sdr_wspr bitstream
+		fi
+		
+		# wait till beginn of next minute	
 		SECONDS=`date +%S`
 		if [ $(( `date +%M | sed 's/^0//'` % 2)) -eq 0 ]
 		then
@@ -40,12 +63,15 @@ while true
 			#echo 'Sleeping for '`expr 60 - $SECONDS`' s'
 			sleep `expr 60 - $SECONDS`	
 		fi
+
 		#echo "Starting recording with nohup in background"
 		nohup sh /opt/redpitaya/www/apps/sdr_wspr/decode-wspr-parallel.sh  >> /dev/shm/sdr-wspr.log 2>&1 &
-		sleep 10 # wait till fpga is heating oscillator constantly
+		
+		# OPTION: record temperature during wspr receiption and correct ppm value
+		#sleep 10 # wait till fpga is heating oscillator constantly
 		if [[ $ENABLE_PPM_CORR -eq "true" ]]
 		then
-			sh -c '/opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh 90' # record PPM during wspr receiption and correct ppm value
+			sh -c '/opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh 110' # record PPM during wspr receiption and correct ppm value
 		fi
 
 		# copy unsubmitted wspr receiptions to sd-card every hour 
