@@ -12,7 +12,7 @@ DATE=`date +%Y-%m-%d:%H:%M:%S`
 
 # calculate ppm
 FORMULA_PPM="(1.0-$f_REF/$f)*1000000.0"
-PPM=`echo "scale=9;${FORMULA_PPM}" | bc`
+PPM=`echo "scale=9;${FORMULA_PPM}" | bc | awk '{printf "%f", $0}'`
 
 # update ppm value in write-c2-files.cfg
 sed -i "s/corr\s\=\s[-0-9.]\+\;/corr = $PPM\;/g" /opt/redpitaya/www/apps/sdr_wspr/write-c2-files.cfg
