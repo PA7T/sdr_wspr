@@ -45,8 +45,7 @@ while true
 		fi
 
 		# OPTION: measure PPM deviation to external reference
-		if [ -n "$ENABLE_PPM_CORR_GPS" ]
-		then
+		if [ "$ENABLE_PPM_CORR_GPS" == true ] ; then
 			cat /opt/redpitaya/www/apps/sdr_wspr/rez_counter.bit > /dev/xdevcfg # load reziprocal counter bitstream
 			rw
 			/opt/redpitaya/www/apps/sdr_wspr/update_ppm_ext.sh >> /opt/redpitaya/www/apps/sdr_wspr/ppm_$MAC_LAST.log
@@ -69,8 +68,7 @@ while true
 		
 		# OPTION: record temperature during wspr receiption and correct ppm value
 		#sleep 10 # wait till fpga is heating oscillator constantly
-		if [ -n "$ENABLE_PPM_CORR" ]
-		then
+		if [ "$ENABLE_PPM_CORR" == true ] ; then
 			sh -c '/opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh 110' # record PPM during wspr receiption and correct ppm value
 		fi
 
