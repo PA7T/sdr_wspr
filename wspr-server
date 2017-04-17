@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Scheduling script, that times recording of wspr transmissions
+#    Scheduling script, that times recording of wspr transmissions
+#
 # Copyright (C) 2016-present  Clemens Heese / PA7T <pa7t@wsprlive.net>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,6 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# check if unsubmitted wspr spots are stored on sd-card
+if [ -e /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT ]; then
+	echo "Unsubmitted ALL_WSPR.TXT found!"
+	cp /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT /dev/shm/
+	rm /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT
+fi
+
+# start server operation
 while true
 	do sleep 1
 		#echo `date`" Sleeping ..."
@@ -37,5 +46,11 @@ while true
 		if [[ $ENABLE_PPM_CORR -eq "true" ]]
 		then
 			sh -c '/opt/redpitaya/www/apps/sdr_wspr/update_ppm.sh 90' # record PPM during wspr receiption and correct ppm value
+		fi
+
+		# copy unsubmitted wspr receiptions to sd-card every hour 
+		if [ $(( `date +%M | sed 's/^0//'` )) -eq 0 ]
+		then
+			cp /dev/shm/ALL_WSPR.TXT /opt/redpitaya/www/apps/sdr_wspr/
 		fi
 done
