@@ -26,4 +26,5 @@ do
 done
 FORMULA_T_AVG="(($OFF+$sum/$count)*$SCL)/1000.0"
 T_AVG=`echo "scale=6;${FORMULA_T_AVG}" | bc`
-echo "T_FPGA = ${T_AVG} °C"
+#echo "T_FPGA = ${T_AVG} °C"
+echo "${T_AVG}"
