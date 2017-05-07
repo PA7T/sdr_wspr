@@ -40,4 +40,7 @@ FORMULA_PPM="${PPM_CORR[0]} + ${PPM_CORR[1]}*$T_AVG + ${PPM_CORR[2]}*$T_AVG*$T_A
 PPM=`echo "scale=3;${FORMULA_PPM}" | bc | awk '{printf "%f", $0}'`
 #echo "ppm = ${PPM}"
 rw
+# write average temperature to temporary file
+echo "$T_AVG" > /dev/shm/last_T_FPGA
+# replace ppm correction value for data acquisition
 sed -i "s/corr\s\=\s[-0-9.]\+\;/corr = $PPM\;/g" /opt/redpitaya/www/apps/sdr_wspr/write-c2-files.cfg
