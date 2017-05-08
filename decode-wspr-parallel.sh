@@ -48,6 +48,10 @@ test -n "$CALL" -a -n "$GRID" -a -s $ALLMEPT || exit
 
 echo "Uploading ..."
 
+# sort by highest SNR, then print unique date/time/band/call combinations,
+# and then sort them by date/time/frequency
+sort -nr -k 4,4 $ALLMEPT | awk '!seen[$1"_"$2"_"int($6)"_"$7] {print} {++seen[$1"_"$2"_"int($6)"_"$7]}' | sort -n -k 1,1 -k 2,2 -k 6,6 -o $ALLMEPT
+
 echo "to wsprlive.net"
 #cat $ALLMEPT >> /media/ramdisk/ALL_WSPR_TEST.TXT
 /usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -fo $WSPRLIVEPAYLOAD -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H data.wsprlive.net -p 8086 -fi $ALLMEPT
@@ -57,9 +61,6 @@ test $? -ne 0 || rm -f $WSPRLIVEPAYLOAD
 #/usr/bin/python3 /opt/redpitaya/www/apps/sdr_wspr/wspr-to-influxdb.py -r $CALL -rl $GRID -rc "$COMMENT" -u $WLID -pw $WLPW -H data.wsprlive.net -p 8086 -fi $ALLMEPT
 
 echo "to wsprnet"
-# sort by highest SNR, then print unique date/time/band/call combinations,
-# and then sort them by date/time/frequency
-sort -nr -k 4,4 $ALLMEPT | awk '!seen[$1"_"$2"_"int($6)"_"$7] {print} {++seen[$1"_"$2"_"int($6)"_"$7]}' | sort -n -k 1,1 -k 2,2 -k 6,6 -o $ALLMEPT
 
 cp $ALLMEPT wspr_spots.txt
 cp $ALLMEPT wspr_last.txt
