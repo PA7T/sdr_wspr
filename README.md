@@ -40,7 +40,7 @@ echo "ENABLE_PPM_PPS=true" >> /opt/redpitaya/www/apps/sdr_wspr/wspr-vars.sh
 ```
 
 ## Enable GPSD clock source
-connect a GPS receiver to the serial port
+First cnnect a GPS receiver to the serial port.
 ```shell
 apt-get -y install gpsd-clients gpsd gpsd-clients
 ```
