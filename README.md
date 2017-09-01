@@ -39,6 +39,28 @@ connect a 1-pps signal to DIO3_N
 echo "ENABLE_PPM_PPS=true" >> /opt/redpitaya/www/apps/sdr_wspr/wspr-vars.sh
 ```
 
+## Enable GPSD clock source
+connect a GPS receiver to the serial port
+```shell
+apt-get -y install gpsd-clients gpsd gpsd-clients
+```
+Edit /etc/default/gpsd with you favorite editor and make sure it contains the following:
+```shell
+# Devices gpsd should collect to at boot time.
+# They need to be read/writeable, either by user gpsd or the group dialout.
+DEVICES="/dev/ttyPS1"
+
+# Other options you want to pass to gpsd
+GPSD_OPTIONS="-n"
+```
+
+Edit /etc/ntp.conf with you favorite editor and add the following lines:
+```shell
+# GPS Serial data reference
+server 127.127.28.0 minpoll 4 maxpoll 4
+fudge 127.127.28.0 time1 0.215 refid GPS
+```
+
 ## Screenshot
 ![alt tag](https://raw.githubusercontent.com/PA7T/sdr_wspr/master/info/screenshot.png)
 
