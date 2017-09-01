@@ -32,6 +32,15 @@ while true
 		#echo `date`" Sleeping ..."
 
 		. /opt/redpitaya/www/apps/sdr_wspr/wspr-vars.sh
+		
+		# OPTION: measure PPM deviation via 1pps signal on DIO3_N
+		if [ "$ENABLE_PPM_PPS" == true ] ; then
+			CORR=`/opt/redpitaya/www/apps/sdr_wspr/measure-corr 30` || exit
+			for file in /opt/redpitaya/www/apps/sdr_wspr/write-c2-files*.cfg
+			do
+				sed -i "/^corr/s/=.*/= $CORR;/" $file
+			done
+		fi
 
 		# wait till next decode finishes: second 53	
 		SECONDS=`date +%S`
