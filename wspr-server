@@ -21,7 +21,9 @@
 if [ -e /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT ]; then
 	echo "Unsubmitted ALL_WSPR.TXT found!"
 	cp /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT /dev/shm/
+	rw
 	rm /opt/redpitaya/www/apps/sdr_wspr/ALL_WSPR.TXT
+	ro
 fi
 
 # start server operation
