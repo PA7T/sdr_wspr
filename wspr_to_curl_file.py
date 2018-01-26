@@ -276,12 +276,12 @@ if __name__ == '__main__': # noqa
 
     try:
         f = open(args.fi, "r")
-        print(args)
+        #print(args)
     except (IOError, OSError):
         print("Error: Cannot open file {} for reading!\n".format(args.fi))
         exit(1)
     else:
-        print("Processing file {} ...\n".format(args.fi))
+        #print("Processing file {} ...\n".format(args.fi))
         try:
             # iterate over lines
             wspr_no = sum(1 for line in f)
