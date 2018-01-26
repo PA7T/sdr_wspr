@@ -87,6 +87,8 @@ while true
 		# copy unsubmitted wspr receiptions to sd-card every hour 
 		if [ $(( `date +%M | sed 's/^0//'` )) -eq 0 ]
 		then
+			rw
 			cp /dev/shm/ALL_WSPR.TXT /opt/redpitaya/www/apps/sdr_wspr/
+			ro
 		fi
 done
