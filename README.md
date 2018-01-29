@@ -60,7 +60,17 @@ Edit /etc/ntp.conf with you favorite editor and add the following lines:
 server 127.127.28.0 minpoll 4 maxpoll 4
 fudge 127.127.28.0 time1 0.215 refid GPS
 ```
-
+## Enable automated reboot if router/host is not reachable
+CAVE: replace 192.168.1.1 with your routers IP address
+```shell
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "*/3 * * * * /opt/redpitaya/www/apps/sdr_wspr/check_router.sh 192.168.1.1" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
+```
 ## Screenshot
 ![alt tag](https://raw.githubusercontent.com/PA7T/sdr_wspr/master/info/screenshot.png)
 
