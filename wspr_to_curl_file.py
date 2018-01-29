@@ -1,14 +1,3 @@
-
-# coding: utf-8
-
-# In[140]:
-
-
-
-
-# In[141]:
-
-
 def haversine(lat1, lon1, lat2, lon2):
     """
     Calculate the great circle distance between two points
@@ -27,10 +16,6 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * asin(sqrt(a))
     km = 6367 * c
     return int(km), int(Bearing)
-
-
-# In[142]:
-
 
 def locator_to_latlong (locator):
     """converts Maidenhead locator in the corresponding WGS84 coordinates
@@ -96,9 +81,6 @@ def locator_to_latlong (locator):
     return latitude, longitude
 
 
-# In[143]:
-
-
 def wspr_to_json(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
 
     # in_str = '160310 1942   1 -24 -4.0  7.0395714  PA2W JO22 37            1  6739  -48'
@@ -153,7 +135,7 @@ def wspr_to_json(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
             "measurement": "wspr_main",
             "tags": {
                 "reporter": wspr_reporter,
-                "band": str(wspr_band).rjust(4,'.'),
+                "band": wspr_band,
                 "loc_reporter": wspr_loc_reporter,
                 "geohash_reporter": wspr_geohash_reporter,
                 "comment": str(wspr_comment)
@@ -176,9 +158,6 @@ def wspr_to_json(in_str,wspr_reporter,wspr_loc_reporter,wspr_comment):
     ]
 
     return json_body
-
-
-# In[144]:
 
 
 def json_curl_str(json_body):
@@ -215,18 +194,23 @@ def json_curl_str(json_body):
 
     i=0
     for field in json_body[0]['fields']:
-        if(i==0):
-            curl_str = curl_str + " " + field + "=" + str(json_body[0]['fields'][field])
+        if(isinstance(json_body[0]['fields'][field], str)): #influxdb needs quotes on string fields (not necessary on string tags)
+            cur_field = "\"" + json_body[0]['fields'][field] + "\""
         else:
-            curl_str = curl_str + "," + field + "=" + str(json_body[0]['fields'][field])
+            cur_field = json_body[0]['fields'][field]
+
+        if(i==0):
+            curl_str = curl_str + " " + field + "=" + str(cur_field)
+        else:
+            curl_str = curl_str + "," + field + "=" + str(cur_field)
         i = i + 1
 
-    curl_str = curl_str + ' ' + json_body[0]['time']
+    wspr_tuple_time = strptime(json_body[0]['time'], "%Y-%m-%dT%H:%M:%SZ")
+    wspr_epoch = "%.0f" % (calendar.timegm(wspr_tuple_time))
+
+    curl_str = curl_str + ' ' + wspr_epoch
 
     return curl_str
-
-
-# In[150]:
 
 
 if __name__ == '__main__': # noqa
